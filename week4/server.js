@@ -47,7 +47,7 @@ const requestListener = async (req, res) => {
             res.write(
                 JSON.stringify({
                     status: 'error',
-                    messahe: '伺服器錯誤',
+                    message: '伺服器錯誤',
                 })
             );
             res.end();
@@ -108,7 +108,6 @@ const requestListener = async (req, res) => {
                 );
                 res.end();
             } catch (error) {
-                console.error(error);
                 res.writeHead(500, headers);
                 res.write(
                     JSON.stringify({
@@ -158,7 +157,6 @@ const requestListener = async (req, res) => {
             );
             res.end();
         } catch (error) {
-            console.error(error);
             res.writeHead(500, headers);
             res.write(
                 JSON.stringify({
@@ -186,7 +184,7 @@ const requestListener = async (req, res) => {
             res.write(
                 JSON.stringify({
                     status: 'error',
-                    messahe: '伺服器錯誤',
+                    message: '伺服器錯誤',
                 })
             );
             res.end();
@@ -236,7 +234,6 @@ const requestListener = async (req, res) => {
                 );
                 res.end();
             } catch (error) {
-                console.error(error);
                 res.writeHead(500, headers);
                 res.write(
                     JSON.stringify({
@@ -286,7 +283,6 @@ const requestListener = async (req, res) => {
             );
             res.end();
         } catch (error) {
-            console.error(error);
             res.writeHead(500, headers);
             res.write(
                 JSON.stringify({
