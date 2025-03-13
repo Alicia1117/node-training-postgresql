@@ -2,18 +2,12 @@ const express = require('express');
 
 const router = express.Router();
 const { dataSource } = require('../db/data-source');
+const appError = require('../utils/appError');
+const isAuth = require('../middlewares/isAuth');
 const logger = require('../utils/logger')('Coach');
+const { isUndefined, isNotValidString } = require('../utils/validation');
 
-function isUndefined(value) {
-    return value === undefined;
-}
-
-function isNotValidString(value) {
-    return (
-        typeof value !== 'string' || value.trim().length === 0 || value === ''
-    );
-}
-
+// 取得教練列表
 router.get('/', async (req, res, next) => {
     try {
         let per = parseInt(req.query.per) || 5;
@@ -35,17 +29,14 @@ router.get('/', async (req, res, next) => {
         next(error);
     }
 });
-
+// 取得教練詳細資訊
 router.get('/:coachId', async (req, res, next) => {
     try {
         const { coachId } = req.params;
 
         if (isUndefined(coachId) || isNotValidString(coachId)) {
             logger.warn('欄位未填寫正確');
-            res.status(400).json({
-                status: 'failed',
-                message: '欄位未填寫正確',
-            });
+            next(appError(400, '欄位未填寫正確'));
             return;
         }
         const coachInfoRepository = dataSource.getRepository('Coach');
@@ -55,10 +46,7 @@ router.get('/:coachId', async (req, res, next) => {
         });
         if (!coachInfo) {
             logger.warn('找不到該教練');
-            res.status(400).json({
-                status: 'failed',
-                message: '找不到該教練',
-            });
+            next(appError(400, '找不到該教練'));
             return;
         }
         res.status(200).json({
