@@ -13,25 +13,14 @@ module.exports = new EntitySchema({
         user_id: {
             type: 'uuid',
             nullable: false,
-            foreignKey: {
-                name: 'course_booking_user_id_fkey',
-                columnNames: ['user_id'],
-                referencedTableName: 'USER',
-                referencedColumnNames: ['id'],
-            },
         },
         course_id: {
             type: 'uuid',
             nullable: false,
-            foreignKey: {
-                name: 'course_booking_course_id_fkey',
-                columnNames: ['course_id'],
-                referencedTableName: 'COURSE',
-                referencedColumnNames: ['id'],
-            },
         },
         booking_at: {
             type: 'timestamp',
+            createDate: true,
             nullable: false,
         },
         status: {
@@ -61,6 +50,26 @@ module.exports = new EntitySchema({
             createDate: true,
             name: 'created_at',
             nullable: false,
+        },
+    },
+    relations: {
+        User: {
+            target: 'User',
+            type: 'many-to-one',
+            joinColumn: {
+                name: 'user_id',
+                referencedColumnName: 'id',
+                foreignKeyConstraintName: 'course_booking_user_id_fk',
+            },
+        },
+        Course: {
+            target: 'Course',
+            type: 'many-to-one',
+            joinColumn: {
+                name: 'course_id',
+                referencedColumnName: 'id',
+                foreignKeyConstraintName: 'course_booking_course_id_fk',
+            },
         },
     },
 });

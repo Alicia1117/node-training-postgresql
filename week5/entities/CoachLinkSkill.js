@@ -13,28 +13,44 @@ module.exports = new EntitySchema({
         coach_id: {
             type: 'uuid',
             nullable: false,
-            foreignKey: {
-                name: 'coach_link_skill_coach_id_fkey',
-                columnNames: ['coach_id'],
-                referencedTableName: 'COACH',
-                referencedColumnNames: ['id'],
-            },
         },
         skill_id: {
             type: 'uuid',
             nullable: false,
-            foreignKey: {
-                name: 'coach_link_skill_skill_id_fkey',
-                columnNames: ['skill_id'],
-                referencedTableName: 'SKILL',
-                referencedColumnNames: ['id'],
-            },
         },
         created_at: {
             type: 'timestamp',
             createDate: true,
-            name: 'created_at',
             nullable: false,
+        },
+    },
+    uniques: [
+        {
+            name: 'coach_link_skill_unique',
+            columns: ['coach_id', 'skill_id'],
+        },
+    ],
+    relations: {
+        Coach: {
+            target: 'Coach',
+            type: 'many-to-one',
+            inverseSide: 'CoachLinkSkill',
+            joinColumn: {
+                name: 'coach_id',
+                referencedColumnName: 'id',
+                foreignKeyConstraintName: 'coach_link_skill_coach_id_fk',
+            },
+            cascade: false,
+        },
+        Skill: {
+            target: 'Skill',
+            type: 'many-to-one',
+            joinColumn: {
+                name: 'skill_id',
+                referencedColumnName: 'id',
+                foreignKeyConstraintName: 'coach_link_skill_skill_id_fk',
+            },
+            cascade: false,
         },
     },
 });

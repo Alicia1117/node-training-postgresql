@@ -1,5 +1,5 @@
 const { EntitySchema } = require('typeorm');
-
+// 20250314 改寫relations
 module.exports = new EntitySchema({
     name: 'CreditPurchase',
     tableName: 'CREDIT_PURCHASE',
@@ -13,22 +13,10 @@ module.exports = new EntitySchema({
         user_id: {
             type: 'uuid',
             nullable: false,
-            foreignKey: {
-                name: 'credit_purchase_user_id_fkey',
-                columnNames: ['user_id'],
-                referencedTableName: 'USER',
-                referencedColumnNames: ['id'],
-            },
         },
         credit_package_id: {
             type: 'uuid',
             nullable: false,
-            foreignKey: {
-                name: 'credit_purchase_credit_package_id_fkey',
-                columnNames: ['credit_package_id'],
-                referencedTableName: 'CREDIT_PACKAGE',
-                referencedColumnNames: ['id'],
-            },
         },
         purchased_credits: {
             type: 'integer',
@@ -50,6 +38,27 @@ module.exports = new EntitySchema({
             type: 'timestamp',
             createDate: true,
             nullable: false,
+        },
+    },
+    relations: {
+        User: {
+            target: 'User',
+            type: 'many-to-one',
+            joinColumn: {
+                name: 'user_id',
+                referencedColumnName: 'id',
+                foreignKeyConstraintName: 'credit_purchase_user_id_fk',
+            },
+        },
+        CreditPackage: {
+            target: 'CreditPackage',
+            type: 'many-to-one',
+            joinColumn: {
+                name: 'credit_package_id',
+                referencedColumnName: 'id',
+                foreignKeyConstraintName:
+                    'credit_purchase_credit_package_id_fk',
+            },
         },
     },
 });
